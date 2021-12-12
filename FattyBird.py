@@ -6,7 +6,7 @@ aken = pygame.display.set_mode([750, 1334])
 manager = pygame_gui.UIManager([750, 1334])
 
 sulgenupp = pygame_gui.elements.UIButton(pygame.Rect((705, 125), (50, 50)),
-                                         'X',
+                                         'Sulge',
                                          manager)
 
 kell = pygame.time.Clock()
