@@ -4,6 +4,12 @@ pygame.init()
 
 aken = pygame.display.set_mode([576, 1024])
 manager = pygame_gui.UIManager([576, 1024])
+lind = pygame.image.load("lind1.png")
+lindlangev = pygame.image.load("lind2.png")
+lindtõusev = pygame.image.load("lind3.png")
+taust1 = pygame.image.load("taust.png")
+taust2 = pygame.image.load("taust2.png")
+taust3 = pygame.image.load("taust3.png")
 
 kell = pygame.time.Clock()
 töötab = True
