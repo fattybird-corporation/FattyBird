@@ -1,9 +1,8 @@
-import pygame, pygame_gui, sys, random # Impordib vajalikud moodulid
+import pygame, sys, random # Impordib vajalikud moodulid
 
 pygame.init()
 
 aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
-manager = pygame_gui.UIManager([576, 1024])
 lind = pygame.image.load("pildid/lind/lind1.png")
 lindlangev = pygame.image.load("pildid/lind/lind2.png")
 lindtõusev = pygame.image.load("pildid/lind/lind3.png")
@@ -15,6 +14,13 @@ power_tiib = pygame.image.load("pildid/power_up1.png")
 power_kilp = pygame.image.load("pildid/power_up2.png")
 põrand = pygame.image.load("pildid/põrand.png")
 põranda_x = 0
+mängu_font = pygame.font.Font("font/04B_19.ttf",40)
+
+# Mängu muutujad
+kell = pygame.time.Clock()
+töötab = True
+skoor = 0
+kõrgeim_skoor = 0
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
@@ -47,13 +53,24 @@ def joonista_postid(postid): # Funktsioon mis joonistab postid
             tagurpidi_post = pygame.transform.flip(alumine_post,False,True)
             aken.blit(tagurpidi_post,post)
 
+def kuva_skoor(mängu_olek):
+    if mängu_olek == "elus":
+        skoor_pind = mängu_font.render(str(int(skoor)),True,(255,255,255))
+        skoor_rect = skoor_pind.get_rect(center = (288,100))
+        aken.blit(skoor_pind,skoor_rect)
+    if mängu_olek == "läbi":
+        skoor_pind = mängu_font.render(f"Skoor: {int(skoor)}",True,(255,255,255))
+        skoor_rect = skoor_pind.get_rect(center = (288,100))
+        aken.blit(skoor_pind,skoor_rect)
+        
+        kõrgeim_skoor_pind = mängu_font.render(f"Kõrgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
+        kõrgeim_skoor_rect = kõrgeim_skoor_pind.get_rect(center = (288,850))
+        aken.blit(kõrgeim_skoor_pind,skoor_rect)
+
 posti_list = [] # List postide suurustega
 UUSPOST = pygame.USEREVENT 
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
-
-kell = pygame.time.Clock()
-töötab = True 
 
 while töötab: # Mängu tsükkel
     dt = kell.tick(120) # FPS
@@ -62,8 +79,6 @@ while töötab: # Mängu tsükkel
             töötab = False
         if e.type == UUSPOST:
             posti_list.extend(ehita_post())
-            
-        manager.process_events(e)
     
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
@@ -72,14 +87,16 @@ while töötab: # Mängu tsükkel
     posti_list = liiguta_poste(posti_list)
     joonista_postid(posti_list)
     
+    skoor += 0.01
+    kuva_skoor("elus")
+
+    
     # Põrand
     põranda_x -= 1
     uus_põrand()
     if põranda_x <= -576:
         põranda_x = 0
         
-    manager.update(dt) 
-    manager.draw_ui(aken)
     pygame.display.flip()
 pygame.quit()
 sys.exit()
