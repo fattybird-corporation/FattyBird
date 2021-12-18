@@ -24,12 +24,16 @@ elif taustanumber == 2:
     taust = taust2
 elif taustanumber == 3:
     taust = taust3
+    
+def uus_põrand():
+    aken.blit(põrand,(põranda_x,900))
+    aken.blit(põrand,(põranda_x + 576,900))
 
 kell = pygame.time.Clock()
 töötab = True
 
 while töötab:
-    dt = kell.tick() / 1000
+    dt = kell.tick(120)
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             töötab = False
@@ -38,8 +42,8 @@ while töötab:
     
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
-    põranda_x += 1
-    aken.blit(põrand,(põranda_x,900))
+    põranda_x -= 1
+    uus_põrand()
     manager.update(dt) 
     manager.draw_ui(aken)
     pygame.display.flip()
