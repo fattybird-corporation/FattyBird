@@ -118,6 +118,9 @@ UUSPOST = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
 
+mäng_läbi_pind = pygame.transform.scale2x(pygame.image.load("pildid/ui/ui.png").convert_alpha())
+mäng_läbi_kesk = mäng_läbi_pind.get_rect(center = (288,512))
+
 while töötab: # Mängu tsükkel
     dt = kell.tick(120) # FPS
     for e in pygame.event.get():
@@ -131,8 +134,11 @@ while töötab: # Mängu tsükkel
                 linnu_liikumine -= 12
             if e.key == pygame.K_SPACE and elus == False:
                 elus = True
+                skoor = 0
                 posti_list.clear()
                 linnu_ruut.center = (100, 512)
+                linnu_liikumine = 0
+                linnu_liikumine -= 12
                 
         if e.type == LINDLEHVITA:
             if lind_kord < 2:
@@ -160,10 +166,9 @@ while töötab: # Mängu tsükkel
         skoor += 0.01
         kuva_skoor("elus")
     else:
+        aken.blit(mäng_läbi_pind,mäng_läbi_kesk)
         kõrgeim_skoor = uuenda_skoori(skoor,kõrgeim_skoor)
         kuva_skoor("läbi")
-        linnu_liikumine = 0
-        skoor = 0
 
     
     # Põrand
