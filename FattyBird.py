@@ -2,13 +2,13 @@ import pygame, sys, random # Impordib vajalikud moodulid
 
 pygame.init()
 
-aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
+aken = pygame.display.set_mode([576, 1024]) # Teeb akna
 
-lindkesk = pygame.image.load("pildid/lind/lind1.png")
+lindkesk = pygame.image.load("pildid/lind/lind1.png") # Laeb linnu pildid
 lindlangev = pygame.image.load("pildid/lind/lind2.png")
 lindtõusev = pygame.image.load("pildid/lind/lind3.png")
 
-lindkesk = pygame.transform.scale(lindkesk, (101, 33))
+lindkesk = pygame.transform.scale(lindkesk, (101, 33)) # Teeb linnu pildid õigeks suuruseks
 lindlangev = pygame.transform.scale(lindlangev, (101, 33.5))
 lindtõusev = pygame.transform.scale(lindtõusev, (101, 44))
 
@@ -20,22 +20,23 @@ linnu_ruut = lind.get_rect(center = (100, 512))
 LINDLEHVITA = pygame.USEREVENT + 1
 pygame.time.set_timer(LINDLEHVITA, 200)
 
-taust1 = pygame.image.load("pildid/taust/taust.png")
+taust1 = pygame.image.load("pildid/taust/taust.png") # Laeb tausta pildid
 taust2 = pygame.image.load("pildid/taust/taust2.png")
 taust3 = pygame.image.load("pildid/taust/taust3.png")
 
-alumine_post = pygame.image.load("pildid/post1.png")
+alumine_post = pygame.image.load("pildid/post1.png") # Laeb posti pildi
 
-power_tiib = pygame.image.load("pildid/power_up1.png")
+power_tiib = pygame.image.load("pildid/power_up1.png") # Laeb powerup pildid
 power_kilp = pygame.image.load("pildid/power_up2.png")
 
-põrand = pygame.image.load("pildid/põrand.png")
+põrand = pygame.image.load("pildid/põrand.png") # Laeb põranda pildi
 põranda_x = 0
-mängu_font = pygame.font.Font("font/04B_19.ttf",40)
+mängu_font = pygame.font.Font("font/04B_19.ttf",40) # Määrab mängu kirjastiili
 
 # Mängu muutujad
 kell = pygame.time.Clock()
 töötab = True
+elus = True
 skoor = 0
 kõrgeim_skoor = 0
 gravitatsioon = 0.5
@@ -85,17 +86,24 @@ def kuva_skoor(mängu_olek):
         kõrgeim_skoor_pind = mängu_font.render(f"Kõrgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
         kõrgeim_skoor_rect = kõrgeim_skoor_pind.get_rect(center = (288,850))
         aken.blit(kõrgeim_skoor_pind,skoor_rect)
+
+def uuenda_skoori(skoor, kõrgeim_skoor):
+    if skoor > kõrgeim_skoor:
+        kõrgeim_skoor = skoor
+    return kõrgeim_skoor
         
 def vaata_puudet(postid): # Vaatab kas lind puutub kokku postidega
     global töötab
     
     for post in postid:
         if linnu_ruut.colliderect(post):
-            töötab = False
+            return False
             
     if linnu_ruut.top <= -100 or linnu_ruut.bottom >= 900:
-        töötab = False
-        
+        return False
+    
+    return True
+                
 def pööre_lind(lind): # Linnu pööramine
     uus_lind = pygame.transform.rotozoom(lind, -linnu_liikumine * 1.2, 1)
     return uus_lind
@@ -118,9 +126,14 @@ while töötab: # Mängu tsükkel
         if e.type == UUSPOST:
             posti_list.extend(ehita_post())
         if e.type == pygame.KEYDOWN:
-            if e.key == pygame.K_SPACE: # Kui vajutatakse tühikut
+            if e.key == pygame.K_SPACE and elus: # Kui vajutatakse tühikut
                 linnu_liikumine = 0
                 linnu_liikumine -= 12
+            if e.key == pygame.K_SPACE and elus == False:
+                elus = True
+                posti_list.clear()
+                linnu_ruut.center = (100, 512)
+                
         if e.type == LINDLEHVITA:
             if lind_kord < 2:
                 lind_kord += 1
@@ -132,19 +145,23 @@ while töötab: # Mängu tsükkel
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
     
-    # Lind
-    linnu_liikumine += gravitatsioon
-    pööratud_lind = pööre_lind(lind)
-    linnu_ruut[1] += linnu_liikumine
-    vaata_puudet(posti_list)
+    if elus:
+        # Lind
+        linnu_liikumine += gravitatsioon
+        pööratud_lind = pööre_lind(lind)
+        linnu_ruut[1] += linnu_liikumine
+        elus = vaata_puudet(posti_list)
+        aken.blit(pööratud_lind, linnu_ruut)
+        
+        # Postid
+        posti_list = liiguta_poste(posti_list)
+        joonista_postid(posti_list)
     
-    aken.blit(pööratud_lind, linnu_ruut)
-    # Postid
-    posti_list = liiguta_poste(posti_list)
-    joonista_postid(posti_list)
-    
-    skoor += 0.01
-    kuva_skoor("elus")
+        skoor += 0.01
+        kuva_skoor("elus")
+    else:
+        kõrgeim_skoor = uuenda_skoori(skoor,kõrgeim_skoor)
+        kuva_skoor("läbi")
 
     
     # Põrand
