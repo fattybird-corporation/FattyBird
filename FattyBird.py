@@ -83,9 +83,9 @@ def kuva_skoor(mängu_olek):
         skoor_rect = skoor_pind.get_rect(center = (288,100))
         aken.blit(skoor_pind,skoor_rect)
         
-        kõrgeim_skoor_pind = mängu_font.render(f"Kõrgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
+        kõrgeim_skoor_pind = mängu_font.render(f"Korgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
         kõrgeim_skoor_rect = kõrgeim_skoor_pind.get_rect(center = (288,850))
-        aken.blit(kõrgeim_skoor_pind,skoor_rect)
+        aken.blit(kõrgeim_skoor_pind,kõrgeim_skoor_rect)
 
 def uuenda_skoori(skoor, kõrgeim_skoor):
     if skoor > kõrgeim_skoor:
@@ -105,7 +105,7 @@ def vaata_puudet(postid): # Vaatab kas lind puutub kokku postidega
     return True
                 
 def pööre_lind(lind): # Linnu pööramine
-    uus_lind = pygame.transform.rotozoom(lind, -linnu_liikumine * 1.2, 1)
+    uus_lind = pygame.transform.rotozoom(lind, -linnu_liikumine * 3, 1)
     return uus_lind
 
 def linnu_animatsioon(): # Linnu animatsioon
@@ -162,6 +162,8 @@ while töötab: # Mängu tsükkel
     else:
         kõrgeim_skoor = uuenda_skoori(skoor,kõrgeim_skoor)
         kuva_skoor("läbi")
+        linnu_liikumine = 0
+        skoor = 0
 
     
     # Põrand
