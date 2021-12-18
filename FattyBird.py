@@ -3,15 +3,32 @@ import pygame, sys, random # Impordib vajalikud moodulid
 pygame.init()
 
 aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
-lind = pygame.image.load("pildid/lind/lind1.png")
+
+lindkesk = pygame.image.load("pildid/lind/lind1.png")
 lindlangev = pygame.image.load("pildid/lind/lind2.png")
 lindtõusev = pygame.image.load("pildid/lind/lind3.png")
+
+lindkesk = pygame.transform.scale(lindkesk, (101, 33))
+lindlangev = pygame.transform.scale(lindlangev, (101, 33.5))
+lindtõusev = pygame.transform.scale(lindtõusev, (101, 44))
+
+lind_kaader = [lindlangev, lindkesk, lindtõusev]
+lind_kord = 0
+lind = lind_kaader[lind_kord]
+linnu_ruut = lind.get_rect(center = (100, 512))
+
+LINDLEHVITA = pygame.USEREVENT + 1
+pygame.time.set_timer(LINDLEHVITA, 200)
+
 taust1 = pygame.image.load("pildid/taust/taust.png")
 taust2 = pygame.image.load("pildid/taust/taust2.png")
 taust3 = pygame.image.load("pildid/taust/taust3.png")
+
 alumine_post = pygame.image.load("pildid/post1.png")
+
 power_tiib = pygame.image.load("pildid/power_up1.png")
 power_kilp = pygame.image.load("pildid/power_up2.png")
+
 põrand = pygame.image.load("pildid/põrand.png")
 põranda_x = 0
 mängu_font = pygame.font.Font("font/04B_19.ttf",40)
@@ -21,6 +38,8 @@ kell = pygame.time.Clock()
 töötab = True
 skoor = 0
 kõrgeim_skoor = 0
+gravitatsioon = 0.5
+linnu_liikumine = 0
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
@@ -66,6 +85,25 @@ def kuva_skoor(mängu_olek):
         kõrgeim_skoor_pind = mängu_font.render(f"Kõrgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
         kõrgeim_skoor_rect = kõrgeim_skoor_pind.get_rect(center = (288,850))
         aken.blit(kõrgeim_skoor_pind,skoor_rect)
+        
+def vaata_puudet(postid): # Vaatab kas lind puutub kokku postidega
+    global töötab
+    
+    for post in postid:
+        if linnu_ruut.colliderect(post):
+            töötab = False
+            
+    if linnu_ruut.top <= -100 or linnu_ruut.bottom >= 900:
+        töötab = False
+        
+def pööre_lind(lind): # Linnu pööramine
+    uus_lind = pygame.transform.rotozoom(lind, -linnu_liikumine * 1.2, 1)
+    return uus_lind
+
+def linnu_animatsioon(): # Linnu animatsioon
+    uus_lind = lind_kaader[lind_kord]
+    uus_lind_ruut = uus_lind.get_rect(center = (100, linnu_ruut.centery))
+    return uus_lind, uus_lind_ruut
 
 posti_list = [] # List postide suurustega
 UUSPOST = pygame.USEREVENT 
@@ -79,10 +117,28 @@ while töötab: # Mängu tsükkel
             töötab = False
         if e.type == UUSPOST:
             posti_list.extend(ehita_post())
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_SPACE: # Kui vajutatakse tühikut
+                linnu_liikumine = 0
+                linnu_liikumine -= 12
+        if e.type == LINDLEHVITA:
+            if lind_kord < 2:
+                lind_kord += 1
+            else:
+                lind_kord = 0
+                
+            lind, linnu_ruut = linnu_animatsioon()
     
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
     
+    # Lind
+    linnu_liikumine += gravitatsioon
+    pööratud_lind = pööre_lind(lind)
+    linnu_ruut[1] += linnu_liikumine
+    vaata_puudet(posti_list)
+    
+    aken.blit(pööratud_lind, linnu_ruut)
     # Postid
     posti_list = liiguta_poste(posti_list)
     joonista_postid(posti_list)
