@@ -15,6 +15,7 @@ alumine_post = pygame.image.load("pildid/post1.png")
 power_tiib = pygame.image.load("pildid/power_up1.png")
 power_kilp = pygame.image.load("pildid/power_up2.png")
 põrand = pygame.image.load("pildid/põrand.png")
+põranda_x = 0
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
