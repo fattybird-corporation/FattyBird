@@ -38,6 +38,8 @@ while töötab:
     
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
+    põranda_x += 1
+    aken.blit(põrand,(põranda_x,900))
     manager.update(dt) 
     manager.draw_ui(aken)
     pygame.display.flip()
