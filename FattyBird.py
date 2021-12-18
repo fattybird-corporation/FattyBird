@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import pygame, pygame_gui, sys, random# impordin 
-=======
 import pygame, pygame_gui, sys, random#impordin pygame, pygame gui, sys ja randomi
->>>>>>> Stashed changes
 
 pygame.init()
 
@@ -19,8 +15,6 @@ alumine_post = pygame.image.load("post1.png")
 ülemine_post = pygame.image.load("post2.png")
 power_tiib = pygame.image.load("power_up1.png")
 power_kilp = pygame.image.load("power_up2.png")
-=======
->>>>>>> Stashed changes
 
 kell = pygame.time.Clock()
 töötab = True
