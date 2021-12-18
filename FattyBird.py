@@ -4,16 +4,16 @@ pygame.init()
 
 aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
 manager = pygame_gui.UIManager([576, 1024])
-lind = pygame.image.load("lind1.png")
-lindlangev = pygame.image.load("lind2.png")
-lindtõusev = pygame.image.load("lind3.png")
-taust1 = pygame.image.load("taust.png")
-taust2 = pygame.image.load("taust2.png")
-taust3 = pygame.image.load("taust3.png")
-alumine_post = pygame.image.load("post1.png")
-ülemine_post = pygame.image.load("post2.png")
-power_tiib = pygame.image.load("power_up1.png")
-power_kilp = pygame.image.load("power_up2.png")
+lind = pygame.image.load("pildid/lind1.png")
+lindlangev = pygame.image.load("pildid/lind2.png")
+lindtõusev = pygame.image.load("pildid/lind3.png")
+taust1 = pygame.image.load("pildid/taust.png")
+taust2 = pygame.image.load("pildid/taust2.png")
+taust3 = pygame.image.load("pildid/taust3.png")
+alumine_post = pygame.image.load("pildid/post1.png")
+ülemine_post = pygame.image.load("pildid/post2.png")
+power_tiib = pygame.image.load("pildid/power_up1.png")
+power_kilp = pygame.image.load("pildid/power_up2.png")
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
