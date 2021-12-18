@@ -2,7 +2,7 @@ import pygame, pygame_gui, sys, random#impordin pygame, pygame gui, sys ja rando
 
 pygame.init()
 
-aken = pygame.display.set_mode([576, 1024])
+aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
 manager = pygame_gui.UIManager([576, 1024])
 lind = pygame.image.load("lind1.png")
 lindlangev = pygame.image.load("lind2.png")
