@@ -17,7 +17,7 @@ power_tiib = pygame.image.load("power_up1.png")
 power_kilp = pygame.image.load("power_up2.png")
 
 kell = pygame.time.Clock()
-töötab = True
+töötab = True# käivitab mängu
 
 while töötab:
     dt = kell.tick() / 1000
