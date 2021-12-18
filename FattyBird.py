@@ -41,6 +41,7 @@ skoor = 0
 kõrgeim_skoor = 0
 gravitatsioon = 0.5
 linnu_liikumine = 0
+lisaskoor = True
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
@@ -63,7 +64,8 @@ def ehita_post(): # Funktsioon mis teeb joonistamiseks valmis uued postid
 def liiguta_poste(postid): # Funktsioon mis liigutab poste
     for post in postid:
         post.centerx -= 5
-    return postid
+    nähtavad_postid = [post for post in postid if post.right > -69]
+    return nähtavad_postid
 
 def joonista_postid(postid): # Funktsioon mis joonistab postid
     for post in postid:
@@ -93,13 +95,15 @@ def uuenda_skoori(skoor, kõrgeim_skoor):
     return kõrgeim_skoor
         
 def vaata_puudet(postid): # Vaatab kas lind puutub kokku postidega
-    global töötab
+    global töötab, lisaskoor
     
     for post in postid:
         if linnu_ruut.colliderect(post):
+            lisaskoor = True
             return False
             
     if linnu_ruut.top <= -100 or linnu_ruut.bottom >= 900:
+        lisaskoor = True
         return False
     
     return True
@@ -112,6 +116,17 @@ def linnu_animatsioon(): # Linnu animatsioon
     uus_lind = lind_kaader[lind_kord]
     uus_lind_ruut = uus_lind.get_rect(center = (100, linnu_ruut.centery))
     return uus_lind, uus_lind_ruut
+
+def skoor_kontroll():
+    global skoor, lisaskoor
+    
+    if posti_list:
+        for post in posti_list:
+            if 95 < post.centerx < 105 and lisaskoor:
+                skoor += 1
+                lisaskoor = False
+            if post.centerx < 0:
+                lisaskoor = True
 
 posti_list = [] # List postide suurustega
 UUSPOST = pygame.USEREVENT 
@@ -163,7 +178,7 @@ while töötab: # Mängu tsükkel
         posti_list = liiguta_poste(posti_list)
         joonista_postid(posti_list)
     
-        skoor += 0.01
+        skoor_kontroll()
         kuva_skoor("elus")
     else:
         aken.blit(mäng_läbi_pind,mäng_läbi_kesk)
