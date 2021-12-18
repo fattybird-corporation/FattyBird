@@ -1,6 +1,6 @@
-import pygame, pygame_gui, sys, random#impordin pygame, pygame gui, sys ja randomi
+import pygame, pygame_gui, sys, random #impordin pygame, pygame gui, sys ja randomi
 
-pygame.init()
+pygame.init()#käivitab pygame'i
 
 aken = pygame.display.set_mode([576, 1024]) # Teeb akna ja laeb pildid
 manager = pygame_gui.UIManager([576, 1024])
