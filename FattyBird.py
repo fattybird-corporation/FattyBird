@@ -10,8 +10,10 @@ lindtõusev = pygame.image.load("lind3.png")
 taust1 = pygame.image.load("taust.png")
 taust2 = pygame.image.load("taust2.png")
 taust3 = pygame.image.load("taust3.png")
-alumine_post = pygame.image.load("")
-ülemine_post = pygame.image.load("")
+alumine_post = pygame.image.load("post1.png")
+ülemine_post = pygame.image.load("post2.png")
+power_tiib = pygame.image.load("power_up1.png")
+power_kilp = pygame.image.load("power_up2.png")
 
 kell = pygame.time.Clock()
 töötab = True
