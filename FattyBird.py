@@ -75,14 +75,19 @@ def joonista_postid(postid): # Funktsioon mis joonistab postid
             tagurpidi_post = pygame.transform.flip(alumine_post,False,True)
             aken.blit(tagurpidi_post,post)
             
-def joonista_power_up(tüüp):
-    for power in 1:
-        powerup_y = random.choice(powerup_kõrgus)
-        powerup_x = 
-        powerup_rect = pygame.Rect(powerup_x, powerup_y, 88, 86)
-        if tüüp == 1:# kui power up on esimene
-            
-        elif tüüp == 2:# kui power up on teine
+def joonista_power_up():
+    global power_kilp,power_tiib 
+    
+    tüüp = random.randint(1,2)
+    powerup_y = random.randint(400,800)
+    powerup_x = random.randint(200,500)
+    powerup_rect = pygame.Rect(powerup_x, powerup_y, 88, 86)
+    powerupid = []
+    powerupid.append(powerup_rect)
+    if tüüp == 1:# kui power up on esimene
+            aken.blit(power_tiib,powerup_rect)
+    elif tüüp == 2:# kui power up on teine
+            aken.blit(power_kilp,powerup_rect)
 
 def kuva_skoor(mängu_olek):
     if mängu_olek == "elus":
@@ -141,9 +146,7 @@ posti_list = [] # List postide suurustega
 UUSPOST = pygame.USEREVENT
 UUSPOWERUP = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
-pygame.time.set_timer(UUSPOWERUP, 12000) #kui mitme sekundi pärast tekib uus power up
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
-powerup_kõrgus = [400,800] # Power upi kõrguse valik
 
 mäng_läbi_pind = pygame.transform.scale2x(pygame.image.load("pildid/ui/ui.png").convert_alpha())
 mäng_läbi_kesk = mäng_läbi_pind.get_rect(center = (288,512))
@@ -155,9 +158,8 @@ while töötab: # Mängu tsükkel
             töötab = False
         if e.type == UUSPOST:
             posti_list.extend(ehita_post())
-        if e.type == UUSPOWERUP:
-            asi = random.randint(1, 2)
-            joonista_power_up(asi)
+        if skoor == 4:
+            joonista_power_up()
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE and elus: # Kui vajutatakse tühikut
                 linnu_liikumine = 0
