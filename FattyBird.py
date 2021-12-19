@@ -194,10 +194,13 @@ while töötab: # Mängu tsükkel
     aken.blit(taust,(0,0))
     
     if elus:
-        if tüüp == 1:
-            aken.blit(power_kilp, powerup_rect)
-        elif tüüp == 2:
-            aken.blit(power_tiib, powerup_rect)
+        if powerup_rect[0] > 0:
+            if tüüp == 1:
+                powerup_rect[0] -= 5
+                aken.blit(power_kilp, (powerup_rect))
+            elif tüüp == 2:
+                powerup_rect[0] -= 5
+                aken.blit(power_tiib, powerup_rect)
     
     if elus:
         # Lind
@@ -217,6 +220,7 @@ while töötab: # Mängu tsükkel
         aken.blit(mäng_läbi_pind,mäng_läbi_kesk)
         kõrgeim_skoor = uuenda_skoori(skoor,kõrgeim_skoor)
         kuva_skoor("läbi")
+        tüüp = 0
 
     # Põrand
     põranda_x -= 1
