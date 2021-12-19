@@ -8,7 +8,7 @@ lindkesk = pygame.image.load("pildid/lind/lind1.png") # Laeb linnu pildid
 lindlangev = pygame.image.load("pildid/lind/lind2.png")
 lindtõusev = pygame.image.load("pildid/lind/lind3.png")
 
-lehvita_sound = pygame.mixer.Sound('heli/wing.wav')
+lehvita_sound = pygame.mixer.Sound('heli/wing.wav') # Laeb mängu helid
 surm_sound = pygame.mixer.Sound('heli/hit.wav')
 punkt_sound = pygame.mixer.Sound('heli/point.wav')
 
@@ -76,21 +76,21 @@ def joonista_postid(postid): # Funktsioon mis joonistab postid
             tagurpidi_post = pygame.transform.flip(alumine_post,False,True)
             aken.blit(tagurpidi_post,post)
 
-def kuva_skoor(mängu_olek):
+def kuva_skoor(mängu_olek): 
     if mängu_olek == "elus":
-        skoor_pind = mängu_font.render(str(int(skoor)),True,(255,255,255))
+        skoor_pind = mängu_font.render(str(int(skoor)),True,(255,255,255)) # Kui mäng käib näitab skoori 
         skoor_rect = skoor_pind.get_rect(center = (288,100))
         aken.blit(skoor_pind,skoor_rect)
     if mängu_olek == "läbi":
         skoor_pind = mängu_font.render(f"Skoor: {int(skoor)}",True,(255,255,255))
-        skoor_rect = skoor_pind.get_rect(center = (288,100))
+        skoor_rect = skoor_pind.get_rect(center = (288,100)) # Kui surnud, näitab eelmise mängu skoori ja kõrgeimat skoori
         aken.blit(skoor_pind,skoor_rect)
         
         kõrgeim_skoor_pind = mängu_font.render(f"Korgeim skoor: {int(kõrgeim_skoor)}",True,(255,255,255))
         kõrgeim_skoor_rect = kõrgeim_skoor_pind.get_rect(center = (288,850))
         aken.blit(kõrgeim_skoor_pind,kõrgeim_skoor_rect)
 
-def uuenda_skoori(skoor, kõrgeim_skoor):
+def uuenda_skoori(skoor, kõrgeim_skoor): # Salvestab kõrgeima skoori muutjasse
     if skoor > kõrgeim_skoor:
         kõrgeim_skoor = skoor
     return kõrgeim_skoor
@@ -137,7 +137,7 @@ UUSPOST = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
 
-mäng_läbi_pind = pygame.transform.scale2x(pygame.image.load("pildid/ui/ui.png").convert_alpha())
+mäng_läbi_pind = pygame.image.load("pildid/ui/ui.png").convert_alpha()
 mäng_läbi_kesk = mäng_läbi_pind.get_rect(center = (288,512))
 
 while töötab: # Mängu tsükkel
@@ -152,7 +152,7 @@ while töötab: # Mängu tsükkel
                 linnu_liikumine = 0
                 linnu_liikumine -= 12
                 lehvita_sound.play()
-            if e.key == pygame.K_SPACE and elus == False:
+            if e.key == pygame.K_SPACE and elus == False: # Kui surnud, alustab mängu uuesti
                 elus = True
                 skoor = 0
                 posti_list.clear()
@@ -168,7 +168,7 @@ while töötab: # Mängu tsükkel
                 
             lind, linnu_ruut = linnu_animatsioon()
     
-    aken.fill([255, 255, 255])
+    aken.fill([255, 255, 255]) # näitab tausta
     aken.blit(taust,(0,0))
     
     if elus:
@@ -186,7 +186,7 @@ while töötab: # Mängu tsükkel
         skoor_kontroll()
         kuva_skoor("elus")
     else:
-        aken.blit(mäng_läbi_pind,mäng_läbi_kesk)
+        aken.blit(mäng_läbi_pind,mäng_läbi_kesk) # Näitab ui
         kõrgeim_skoor = uuenda_skoori(skoor,kõrgeim_skoor)
         kuva_skoor("läbi")
         tüüp = 0
