@@ -130,7 +130,7 @@ UUSPOST = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
 
-mäng_läbi_pind = pygame.transform.scale2x(pygame.image.load("pildid/ui/ui.png").convert_alpha())
+mäng_läbi_pind = pygame.image.load("pildid/ui/ui.png").convert_alpha()
 mäng_läbi_kesk = mäng_läbi_pind.get_rect(center = (288,512))
 
 while töötab: # Mängu tsükkel
