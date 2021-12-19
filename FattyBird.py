@@ -40,7 +40,7 @@ mängu_font = pygame.font.Font("font/04B_19.ttf",40) # Määrab mängu kirjastii
 # Mängu muutujad
 kell = pygame.time.Clock()
 töötab = True
-elus = False
+elus = True
 skoor = 0
 kõrgeim_skoor = 0
 gravitatsioon = 0.5
