@@ -8,6 +8,10 @@ lindkesk = pygame.image.load("pildid/lind/lind1.png") # Laeb linnu pildid
 lindlangev = pygame.image.load("pildid/lind/lind2.png")
 lindtõusev = pygame.image.load("pildid/lind/lind3.png")
 
+lehvita_sound = pygame.mixer.Sound('heli/wing.wav')
+surm_sound = pygame.mixer.Sound('heli/hit.wav')
+punkt_sound = pygame.mixer.Sound('heli/point.wav')
+
 lindkesk = pygame.transform.scale(lindkesk, (101, 33)) # Teeb linnu pildid õigeks suuruseks
 lindlangev = pygame.transform.scale(lindlangev, (101, 33.5))
 lindtõusev = pygame.transform.scale(lindtõusev, (101, 44))
@@ -97,10 +101,12 @@ def vaata_puudet(postid): # Vaatab kas lind puutub kokku postidega
     for post in postid:
         if linnu_ruut.colliderect(post):
             lisaskoor = True
+            surm_sound.play()
             return False
             
     if linnu_ruut.top <= -100 or linnu_ruut.bottom >= 900:
         lisaskoor = True
+        surm_sound.play()
         return False
     
     return True
@@ -122,6 +128,7 @@ def skoor_kontroll():
             if 95 < post.centerx < 105 and lisaskoor:
                 skoor += 1
                 lisaskoor = False
+                punkt_sound.play()
             if post.centerx < 0:
                 lisaskoor = True
 
@@ -130,7 +137,7 @@ UUSPOST = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
 
-mäng_läbi_pind = pygame.image.load("pildid/ui/ui.png").convert_alpha()
+mäng_läbi_pind = pygame.transform.scale2x(pygame.image.load("pildid/ui/ui.png").convert_alpha())
 mäng_läbi_kesk = mäng_läbi_pind.get_rect(center = (288,512))
 
 while töötab: # Mängu tsükkel
@@ -144,6 +151,7 @@ while töötab: # Mängu tsükkel
             if e.key == pygame.K_SPACE and elus: # Kui vajutatakse tühikut
                 linnu_liikumine = 0
                 linnu_liikumine -= 12
+                lehvita_sound.play()
             if e.key == pygame.K_SPACE and elus == False:
                 elus = True
                 skoor = 0
