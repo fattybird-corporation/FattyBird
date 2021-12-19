@@ -171,6 +171,7 @@ while töötab: # Mängu tsükkel
             if e.key == pygame.K_SPACE and elus == False:
                 elus = True
                 skoor = 0
+                powerLiigu = True
                 posti_list.clear()
                 linnu_ruut.center = (100, 512)
                 linnu_liikumine = 0
