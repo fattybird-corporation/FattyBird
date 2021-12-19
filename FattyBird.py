@@ -30,9 +30,6 @@ taust3 = pygame.image.load("pildid/taust/taust3.png")
 
 alumine_post = pygame.image.load("pildid/post1.png") # Laeb posti pildi
 
-power_tiib = pygame.image.load("pildid/power_up1.png") # Laeb powerup pildid
-power_kilp = pygame.image.load("pildid/power_up2.png")
-
 põrand = pygame.image.load("pildid/põrand.png") # Laeb põranda pildi
 põranda_x = 0
 mängu_font = pygame.font.Font("font/04B_19.ttf",40) # Määrab mängu kirjastiili
@@ -46,10 +43,6 @@ kõrgeim_skoor = 0
 gravitatsioon = 0.5
 linnu_liikumine = 0
 lisaskoor = True
-tüüp = 0
-powerLiigu = True
-tiibpower = False
-kilppower = False
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
@@ -82,25 +75,6 @@ def joonista_postid(postid): # Funktsioon mis joonistab postid
         else: # Keerab ülemise posti õiget pidi
             tagurpidi_post = pygame.transform.flip(alumine_post,False,True)
             aken.blit(tagurpidi_post,post)
-            
-def joonista_power_up():
-    global power_kilp,power_tiib, tüüp, powerup_rect,powerupid
-    
-    tüüp = random.randint(1,2)
-    powerup_y = random.randint(400,700)
-    powerup_x = random.randint(200,400)
-    powerup_rect = pygame.Rect(powerup_x, powerup_y, 88, 86)
-    powerupid = []
-    powerupid.append(powerup_rect)
-    
-def kaspowerup():
-    global tüüp,linnu_ruut,powerup_rect,powerupid
-    for powerup in powerupid:
-        if powerup_rect.colliderect(linnu_ruut):
-            if tüüp == 1:
-                kilppower = True
-            elif tüüp == 2:
-                tiibpower = True
 
 def kuva_skoor(mängu_olek):
     if mängu_olek == "elus":
@@ -156,9 +130,7 @@ def skoor_kontroll():
                 lisaskoor = True
 
 posti_list = [] # List postide suurustega
-powerupid = []
 UUSPOST = pygame.USEREVENT
-UUSPOWERUP = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
 posti_kõrgus = [500,600,700] # Valik posti kõrgustest
 
@@ -172,10 +144,6 @@ while töötab: # Mängu tsükkel
             töötab = False
         if e.type == UUSPOST:
             posti_list.extend(ehita_post())
-        if skoor == 2:
-            if powerLiigu:
-                joonista_power_up()
-                powerLiigu = False
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE and elus: # Kui vajutatakse tühikut
                 linnu_liikumine = 0
@@ -183,7 +151,6 @@ while töötab: # Mängu tsükkel
             if e.key == pygame.K_SPACE and elus == False:
                 elus = True
                 skoor = 0
-                powerLiigu = True
                 posti_list.clear()
                 linnu_ruut.center = (100, 512)
                 linnu_liikumine = 0
@@ -199,15 +166,6 @@ while töötab: # Mängu tsükkel
     
     aken.fill([255, 255, 255])
     aken.blit(taust,(0,0))
-    
-    if elus:
-        if tüüp == 1:
-            powerup_rect[0] -= 5
-            aken.blit(power_kilp, powerup_rect)
-        elif tüüp == 2:
-            powerup_rect[0] -= 5
-            aken.blit(power_tiib, powerup_rect)
-        kaspowerup()
     
     if elus:
         # Lind
