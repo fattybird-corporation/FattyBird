@@ -90,12 +90,6 @@ def joonista_power_up():
     powerup_rect = pygame.Rect(powerup_x, powerup_y, 88, 86)
     powerupid = []
     powerupid.append(powerup_rect)
-    '''if tüüp == 1:# kui power up on esimene
-        pass
-        #aken.blit(power_tiib,powerup_rect)
-    elif tüüp == 2:# kui power up on teine
-        pass
-        #aken.blit(power_kilp,powerup_rect)'''
 
 def kuva_skoor(mängu_olek):
     if mängu_olek == "elus":
@@ -194,13 +188,12 @@ while töötab: # Mängu tsükkel
     aken.blit(taust,(0,0))
     
     if elus:
-        if powerup_rect[0] > 0:
-            if tüüp == 1:
-                powerup_rect[0] -= 5
-                aken.blit(power_kilp, (powerup_rect))
-            elif tüüp == 2:
-                powerup_rect[0] -= 5
-                aken.blit(power_tiib, powerup_rect)
+        if tüüp == 1:
+            powerup_rect[0] -= 5
+            aken.blit(power_kilp, (powerup_rect))
+        elif tüüp == 2:
+            powerup_rect[0] -= 5
+            aken.blit(power_tiib, powerup_rect)
     
     if elus:
         # Lind
