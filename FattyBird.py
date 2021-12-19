@@ -1,7 +1,3 @@
-import os
-kaust = os.path.dirname(os.path.realpath(__file__))
-os.chdir(kaust)
-
 import pygame, sys, random # Impordib vajalikud moodulid
 
 pygame.init()
