@@ -48,6 +48,8 @@ linnu_liikumine = 0
 lisaskoor = True
 tüüp = 0
 powerLiigu = True
+tiibpower = False
+kilppower = False
 
 taustanumber = random.randint(1,3) # Valib kolmest valikust suvalise tausta mida näidata
 if taustanumber == 1:
@@ -82,14 +84,23 @@ def joonista_postid(postid): # Funktsioon mis joonistab postid
             aken.blit(tagurpidi_post,post)
             
 def joonista_power_up():
-    global power_kilp,power_tiib, tüüp, powerup_rect
+    global power_kilp,power_tiib, tüüp, powerup_rect,powerupid
     
     tüüp = random.randint(1,2)
-    powerup_y = random.randint(400,800)
-    powerup_x = random.randint(200,500)
+    powerup_y = random.randint(400,700)
+    powerup_x = random.randint(200,400)
     powerup_rect = pygame.Rect(powerup_x, powerup_y, 88, 86)
     powerupid = []
     powerupid.append(powerup_rect)
+    
+def kaspowerup():
+    global tüüp,linnu_ruut,powerup_rect,powerupid
+    for powerup in powerupid:
+        if powerup_rect.colliderect(linnu_ruut):
+            if tüüp == 1:
+                kilppower = True
+            elif tüüp == 2:
+                tiibpower = True
 
 def kuva_skoor(mängu_olek):
     if mängu_olek == "elus":
@@ -145,6 +156,7 @@ def skoor_kontroll():
                 lisaskoor = True
 
 posti_list = [] # List postide suurustega
+powerupid = []
 UUSPOST = pygame.USEREVENT
 UUSPOWERUP = pygame.USEREVENT
 pygame.time.set_timer(UUSPOST,1200) # Kui mitme ms pärast tekib uus post
@@ -191,10 +203,11 @@ while töötab: # Mängu tsükkel
     if elus:
         if tüüp == 1:
             powerup_rect[0] -= 5
-            aken.blit(power_kilp, (powerup_rect))
+            aken.blit(power_kilp, powerup_rect)
         elif tüüp == 2:
             powerup_rect[0] -= 5
             aken.blit(power_tiib, powerup_rect)
+        kaspowerup()
     
     if elus:
         # Lind
